@@ -37,8 +37,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public ApiResponseDto<?> login(LoginRequest loginRequest) {
+        // Verify User's Email
         AppUser appUser = appUserRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(()-> new ApplicationException("User is not registered"));
+        // Verify Password
         if(!passwordEncoder.matches(loginRequest.getPassword(),appUser.getPasswordHash())){
             throw  new ApplicationException("Invalid Credentials");
         }

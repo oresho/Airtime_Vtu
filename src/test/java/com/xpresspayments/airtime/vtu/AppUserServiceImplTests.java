@@ -38,23 +38,20 @@ public class AppUserServiceImplTests {
 
 @Test
     public void shouldCreateAppUser() {
-        // Arrange
+        // get sample sign up details
         SignUpRequest signUpRequest = getSignUpRequest();
-        // Set up your signUpRequest object with necessary data
 
         // Mock the behavior of appUserRepository
         when(appUserRepository.findByPhoneNo(signUpRequest.getPhoneNo())).thenReturn(Optional.empty());
         when(appUserRepository.findByEmail(signUpRequest.getEmail())).thenReturn(Optional.empty());
 
         AppUser savedAppUser = getAppUser();
-        // Set up savedAppUser object with necessary data
-
         when(appUserRepository.save(savedAppUser)).thenReturn(savedAppUser);
 
         // Mock the behavior of passwordEncoder
         when(passwordEncoder.encode(signUpRequest.getPassword())).thenReturn(savedAppUser.getPasswordHash());
 
-        // Act
+//        call service
         ApiResponseDto<?> response = appUserService.create(signUpRequest);
 
         // Assert
@@ -68,21 +65,18 @@ public class AppUserServiceImplTests {
         assertEquals(savedAppUser.getFullName(), appUserResponse.getFullName());
         assertEquals(savedAppUser.getEmail(), appUserResponse.getEmail());
         assertEquals(savedAppUser.getPhoneNo(), appUserResponse.getPhoneNo());
-        assertEquals(savedAppUser.getLocation(), appUserResponse.getLocation());
 
 
 //        // Verify that the repository save method was called
         verify(appUserRepository, times(1)).save(appUserArgumentCaptor.capture());
     }
 
-    // Add more tests for failure scenarios
     private SignUpRequest getSignUpRequest() {
         SignUpRequest signUpRequest = new SignUpRequest();
         signUpRequest.setFirstname("Test");
         signUpRequest.setLastname("Test");
         signUpRequest.setEmail("Test");
         signUpRequest.setPhoneNo("Test");
-        signUpRequest.setLocation("Test");
         signUpRequest.setPassword("Test");
         return signUpRequest;
     }
@@ -92,7 +86,6 @@ public class AppUserServiceImplTests {
         appUser.setFullName("Test Test");
         appUser.setEmail("Test");
         appUser.setPhoneNo("Test");
-        appUser.setLocation("Test");
         appUser.setPasswordHash("Test");
         return appUser;
     }
@@ -102,7 +95,6 @@ public class AppUserServiceImplTests {
         appUserResponse.setFullName(appUser.getFullName());
         appUserResponse.setEmail(appUser.getEmail());
         appUserResponse.setPhoneNo(appUser.getPhoneNo());
-        appUserResponse.setLocation(appUser.getLocation());
         return appUserResponse;
     }
 

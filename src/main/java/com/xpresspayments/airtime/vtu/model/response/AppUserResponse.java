@@ -11,5 +11,4 @@ public class AppUserResponse {
     private String fullName;
     private String email;
     private String phoneNo;
-    private String location;
 }

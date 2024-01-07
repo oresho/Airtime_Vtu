@@ -62,7 +62,7 @@ public class AuthenticationServiceImplTest {
 
     @Test
     public void shouldSignUpUser() {
-        // Arrange
+        // get sign up details
         SignUpRequest signUpRequest = getSignUpRequest();
 
         ApiResponseDto<?> expectedResponse = new ApiResponseDto<>("Successfully Signed up User", HttpStatus.CREATED.value(), mapToAppUserResponse(getAppUser()));
@@ -79,8 +79,8 @@ public class AuthenticationServiceImplTest {
     }
 
     @Test
-    public void testLogin_Success() {
-        // Arrange
+    public void shouldLoginUser() {
+        // get login details
         LoginRequest loginRequest = getLoginRequest();
 
         AppUser appUser = new AppUser();
@@ -124,13 +124,12 @@ public class AuthenticationServiceImplTest {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // Add more tests for failure scenarios
     @Test
-    public void testLogin_Failure_UserNotRegistered() {
-        // Arrange
-        LoginRequest loginRequest = new LoginRequest();
-        // Set up your loginRequest object with necessary data
+    public void shouldFailLogin_Unregistered_User() {
+        // get login details
+        LoginRequest loginRequest = getLoginRequest();
 
+        // mock user does not exist scenario
         when(appUserRepository.findByEmail(loginRequest.getEmail())).thenReturn(Optional.empty());
 
         // Act and Assert
@@ -138,15 +137,15 @@ public class AuthenticationServiceImplTest {
     }
 
     @Test
-    public void testLogin_Failure_InvalidCredentials() {
-        // Arrange
-        LoginRequest loginRequest = new LoginRequest();
-        // Set up your loginRequest object with necessary data
+    public void shouldFailLogin_Invalid_Credentials() {
+        // get login details
+        LoginRequest loginRequest = getLoginRequest();
 
         AppUser appUser = new AppUser();
         appUser.setEmail("test@example.com");
-        appUser.setPasswordHash("mockedPasswordHash"); // Replace with an actual hashed password
+        appUser.setPasswordHash("fake_mocked_Password_Hash_that_doesn't_match");
 
+        //mock invalid credentials scenario
         when(appUserRepository.findByEmail(loginRequest.getEmail())).thenReturn(Optional.of(appUser));
         when(passwordEncoder.matches(loginRequest.getPassword(), appUser.getPasswordHash())).thenReturn(false);
 
@@ -155,11 +154,11 @@ public class AuthenticationServiceImplTest {
     }
 
     @Test
-    public void testSignUp_Failure_DuplicatePhoneNo() {
-        // Arrange
-        SignUpRequest signUpRequest = new SignUpRequest();
-        // Set up your signUpRequest object with necessary data
+    public void shouldFailSignUp_Duplicate_PhoneNo() {
+        // get signup details
+        SignUpRequest signUpRequest = getSignUpRequest();
 
+        // mock behaviour
         when(appUserService.create(signUpRequest)).thenThrow(new ApplicationException("This phone number is already used"));
 
         // Act and Assert
@@ -167,11 +166,11 @@ public class AuthenticationServiceImplTest {
     }
 
     @Test
-    public void testSignUp_Failure_DuplicateEmail() {
-        // Arrange
-        SignUpRequest signUpRequest = new SignUpRequest();
-        // Set up your signUpRequest object with necessary data
+    public void shouldFailSignUp_Duplicate_Email() {
+        // get signup details
+        SignUpRequest signUpRequest = getSignUpRequest();
 
+//        mock behaviour
         when(appUserService.create(signUpRequest)).thenThrow(new ApplicationException("This email is already used"));
 
         // Act and Assert
@@ -183,7 +182,6 @@ public class AuthenticationServiceImplTest {
         appUser.setFullName("Test Test");
         appUser.setEmail("Test");
         appUser.setPhoneNo("Test");
-        appUser.setLocation("Test");
         appUser.setPasswordHash("Test");
         return appUser;
     }
@@ -193,7 +191,6 @@ public class AuthenticationServiceImplTest {
         appUserResponse.setFullName(appUser.getFullName());
         appUserResponse.setEmail(appUser.getEmail());
         appUserResponse.setPhoneNo(appUser.getPhoneNo());
-        appUserResponse.setLocation(appUser.getLocation());
         return appUserResponse;
     }
 
@@ -203,7 +200,6 @@ public class AuthenticationServiceImplTest {
         signUpRequest.setLastname("Test");
         signUpRequest.setEmail("Test");
         signUpRequest.setPhoneNo("Test");
-        signUpRequest.setLocation("Test");
         signUpRequest.setPassword("Test");
         return signUpRequest;
     }

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +18,5 @@ public class AppUser {
     private String email;
     @Column(unique = true)
     private String phoneNo;
-    private String location;
     private String passwordHash;
-    private boolean canResetPassword = false;
 }

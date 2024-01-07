@@ -42,6 +42,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, String> data = new HashMap<>();
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
+        // For-loop to find all field errors and add to map
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()){
             data.put(fieldError.getField(), fieldError.getDefaultMessage());
         }

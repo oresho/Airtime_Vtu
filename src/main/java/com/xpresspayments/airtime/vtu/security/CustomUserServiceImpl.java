@@ -16,6 +16,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CustomUserServiceImpl implements UserDetailsService {
+//    Dependency Injection of App User Repo Class
     private final AppUserRepository appUserRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

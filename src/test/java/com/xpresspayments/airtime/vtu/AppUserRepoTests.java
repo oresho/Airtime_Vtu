@@ -25,7 +25,6 @@ public class AppUserRepoTests {
         appUser.setFullName("Test");
         appUser.setEmail("Test");
         appUser.setPhoneNo("Test");
-        appUser.setLocation("Test");
         appUser.setPasswordHash("Test");
         return appUser;
     }

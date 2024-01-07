@@ -2,6 +2,7 @@ package com.xpresspayments.airtime.vtu.service.topup;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xpresspayments.airtime.vtu.exceptionHandler.ApplicationException;
 import com.xpresspayments.airtime.vtu.model.entity.Airtime;
 import com.xpresspayments.airtime.vtu.model.request.TopUpRequest;
 import com.xpresspayments.airtime.vtu.model.request.VtuRequest;
@@ -32,8 +33,8 @@ public class TopUpServiceImpl implements TopUpService{
     private String privKey;
 
     // Inject WebClient into the constructor
-    public TopUpServiceImpl(WebClient.Builder webClientBuilder, ObjectMapper objectMapper, HashGeneratorService hashGeneratorService) {
-        this.webClient = webClientBuilder.baseUrl("https://billerstest.xpresspayments.com:9603/api/v1").build();
+    public TopUpServiceImpl(ObjectMapper objectMapper, HashGeneratorService hashGeneratorService) {
+        this.webClient = WebClient.create("https://billerstest.xpresspayments.com:9603/api/v1");
         this.objectMapper = objectMapper;
         this.hashGeneratorService = hashGeneratorService;
     }
@@ -45,18 +46,24 @@ public class TopUpServiceImpl implements TopUpService{
         String requestDto = objectMapper.writeValueAsString(vtuRequest);
         //convert request to JSON using gson or ObjectMapper
         String GENERATED_HMAC = hashGeneratorService.calculateHMAC512(requestDto, privKey);
-        String jsonResponse = webClient.post()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/airtime/fulfil")
-                        .build())
-                .header(HttpHeaders.AUTHORIZATION, authToken)
-                .header("PaymentHash", GENERATED_HMAC)
-                .header("Channel", "API")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(requestDto))
-                .retrieve()
-                .bodyToMono(String.class)
-                .block(); // block() is used here for simplicity; in a real application, you'd handle the response asynchronously.
+        String jsonResponse;
+        try {
+            jsonResponse = webClient.post()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/airtime/fulfil")
+                            .build())
+                    .header(HttpHeaders.AUTHORIZATION, authToken)
+                    .header("PaymentHash", GENERATED_HMAC)
+                    .header("Channel", "API")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(BodyInserters.fromValue(requestDto))
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        }
+        catch (Exception e){
+            throw new ApplicationException(e.getMessage());
+        }
         AirtimeApiResponse airtimeApiResponse = objectMapper.readValue(jsonResponse, AirtimeApiResponse.class);
         return new ApiResponseDto<>("Successfully sent Top Up Request for phoneNo: " + vtuRequest.getDetails().getPhoneNumber(),
                 HttpStatus.OK.value(),

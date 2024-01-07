@@ -38,7 +38,6 @@ public class AppUserServiceImpl implements AppUserService {
         appUserResponse.setFullName(appUser.getFullName());
         appUserResponse.setEmail(appUser.getEmail());
         appUserResponse.setPhoneNo(appUser.getPhoneNo());
-        appUserResponse.setLocation(appUser.getLocation());
         return appUserResponse;
     }
 
@@ -47,7 +46,6 @@ public class AppUserServiceImpl implements AppUserService {
         appUser.setFullName(signUpRequest.getFirstname() + " " + signUpRequest.getLastname());
         appUser.setEmail(signUpRequest.getEmail());
         appUser.setPhoneNo(signUpRequest.getPhoneNo());
-        appUser.setLocation(signUpRequest.getLocation());
         appUser.setPasswordHash(passwordEncoder.encode(signUpRequest.getPassword()));
         return appUser;
     }

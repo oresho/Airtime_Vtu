@@ -16,12 +16,20 @@ public class HashGeneratorServiceImpl implements HashGeneratorService{
         SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), HMAC_SHA512);
         Mac mac = null;
         try {
-            mac = Mac.getInstance(HMAC_SHA512);
-            mac.init(secretKeySpec);
+            mac = getInstance(HMAC_SHA512);
+            initializeKey(mac, secretKeySpec);
             return Hex.encodeHexString(mac.doFinal(data.getBytes()));
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    public void initializeKey(Mac mac, SecretKeySpec secretKeySpec) throws InvalidKeyException {
+        mac.init(secretKeySpec);
+    }
+
+    public Mac getInstance(String algorithm) throws NoSuchAlgorithmException {
+        return Mac.getInstance(algorithm);
     }
 }

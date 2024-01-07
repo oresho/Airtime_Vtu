@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
+    // Dependency Injection of Authentication Service Class
     private final AuthenticationService authenticationService;
 
     @Operation(summary = "User attempts to signup")

@@ -8,13 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ApiResponseDto<T> {
 
     private String message;
     private Integer statusCode;
     private T data;
-
-    public ApiResponseDto(String message, Integer statusCode) {
-    }
 }
