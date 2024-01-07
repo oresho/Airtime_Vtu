@@ -7,7 +7,8 @@ This repository contains the implementation of an API service for a payment comp
 
 # Configuration
 
-Before running the application, ensure that you fill in the required information in the application.properties file. Below are the necessary configurations:properties
+Before running the application, ensure that you fill in the required information in the `application.properties` file and also in the `maven-surefire-plugin` configuration.environmentVariables in the plugins section of the `pom.xml` file when testing. Below are the necessary configurations.
+
 # Database Configuration
 spring.datasource.url=your_database_url
 spring.datasource.username=your_database_username
@@ -17,10 +18,10 @@ spring.datasource.password=your_database_password
 jwt.secret=your_secret_key
 jwt.expiration-time=3600000 # Set your preferred expiration time in milliseconds
 
-# VTU API Configuration
-vtu.api.url=https://vtu-api.example.com
-vtu.api.username=your_vtu_api_username
-vtu.api.password=your_vtu_api_password
+# BILLER SERVICE API Configuration
+xpress.public.key=your_public_key
+xpress.private.key=your_private_key
+
 ## Authentication API
 
 The authentication API is implemented using JWT for secure and efficient user authentication. It ensures that only authorized users can access the payment services.
