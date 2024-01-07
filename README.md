@@ -68,6 +68,12 @@ To make an airtime payment, send a `POST` request to `/api/v1/topup`, pass desti
   "amount": 100
 }
 ```
+`NOTE:` These are the applicable test parameters for each Operator as provided in [test details documentation](https://xpresspayments-my.sharepoint.com/:x:/p/jeremiah_ayeni/EUbdilIACpFGjAoNdhZfUAkB9BohaFemh0Hh780dtobjwg?rtime=m8lRQsIP3Eg)
+`  MTN	      08033333333
+   GLO	      08055555555
+   9Mobile	  09099999999
+   Airtel	    08022222222`
+
 ## Unit Testing
 
 Unit tests have been implemented to ensure the reliability of the codebase. The tests cover at least 50% of the code to verify the correctness of the authentication and airtime payment functionalities.
