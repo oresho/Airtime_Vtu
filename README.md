@@ -1,9 +1,9 @@
 # Airtime_Vtu
-API service that authenticates users and provide airtime payments using XpressPay API.
+API service that authenticates users and provide airtime payments using XpressPay API. Please note that this api runs on port 8080 with `baseurl{http://localhost:8080}`
 
 ## Overview
 
-This repository contains the implementation of an API service for a payment company. The primary functionalities include user authentication using JSON Web Tokens (JWT) and facilitating airtime payments through the Virtual Top-Up (VTU) API.
+This repository contains the implementation of an API service for a payment company. The primary functionalities include user authentication using JSON Web Tokens (JWT) and facilitating airtime payments through the Virtual Top-Up (VTU) API. This API service has swagger-ui implementation which can be accessed at `/swagger-ui/index.html#/`
 
 # Configuration
 
